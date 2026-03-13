@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: rgb(37, 35, 35);
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        
+        .sidebar {
+            position: fixed;
+            left: -300px;
+            top: 0;
+            width: 300px;
+            height: 100vh;
+            background-color: rgba(37, 35, 35, 0.95);
+            border-right: 2px solid rgb(101, 190, 239);
+            transition: left 0.3s ease;
+            z-index: 1000;
+            padding-top: 60px;
+            overflow-y: auto;
+        }
+        
+        .sidebar.open {
+            left: 0;
+        }
+        
+        .toggle-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color: rgb(101, 190, 239);
+            color: rgb(37, 35, 35);
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 18px;
+            z-index: 1001;
+        }
+        
+        .toggle-btn:hover {
+            background-color: rgba(101, 190, 239, 0.8);
+        }
+        
+        a {
+            color: rgb(101, 190, 239);
+            text-decoration: none;
+            display: block;
+            padding: 15px 20px;
+            margin: 10px;
+            border-left: 4px solid rgb(101, 190, 239);
+            border-radius: 4px;
+            background-color: rgba(101, 190, 239, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        a:hover {
+            background-color: rgba(101, 190, 239, 0.2);
+            border-left: 6px solid rgb(101, 190, 239);
+            padding-left: 18px;
+        }
+        
+        a h3 {
+            margin: 0;
+        }
+        
+        .content {
+            margin-left: 0;
+            padding: 20px;
+            transition: margin-left 0.3s ease;
+        }
+        
+        p {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            color: rgb(101, 190, 239);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
+    
+    <div class="sidebar" id="sidebar">
+        <a href="loggedin.html"><h3>Home</h3></a>
+        <a href="settings1.html"><h3>Settings</h3></a>
+        <a href="accout1.html"><h3>Account</h3></a>
+        <a href="about_me1.html"><h3>About Me</h3></a>
+        <a href="index.html"><h3>Logout</h3></a>
+    </div>
+    
+    <div class="content">
+        <p>Welcome to the account page! Here you can manage your account details, update your information, and customize your preferences.</p>
+        <p>Feel free to explore the available options and make any necessary changes to your account settings.</p>
+        <p>This page is still in development, but we are working hard to provide you with a seamless experience!</p>
+    </div>
+    
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('open');
+        }
+    </script>
+</body>
+</html>

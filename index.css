@@ -1,0 +1,57 @@
+body {
+  background-color: rgb(37, 35, 35);
+  font-family: Arial, sans-serif;
+}
+a {
+    text-align: center;
+    color: rgb(101, 190, 239);
+    text-decoration: none;
+}
+
+h1 {
+  color: rgb(101, 190, 239);
+  text-align: center;
+
+}
+
+button {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    border: 1px solid rgb(101, 190, 239);
+    border-radius: 5px;
+    background-color: rgb(37, 35, 35);
+    color: rgb(101, 190, 239);              /* text color inside */
+
+}
+fieldset {
+  width: 300px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 3px solid rgb(101, 190, 239);
+  border-radius: 5px;
+  text-align: center;
+}
+input {
+    background-color: rgb(37, 35, 35);   /* black box */
+    color: rgb(101, 190, 239);              /* text color inside */
+    border: 1px solid rgb(101, 190, 239);    /* optional border */
+    padding: 10px;
+    margin: 10px 0;
+    width: 200px;
+    border-radius: 5px;        /* rounded corners */
+}
+::placeholder {
+    color: rgb(101, 239, 237); /* placeholder text color */
+    opacity: 1; /* ensure placeholder is fully visible */
+}
+input:focus {
+    outline: none;
+    box-shadow: 0 0 10px rgb(101, 190, 239);
+    border-color: rgb(101, 190, 239);
+}
+
+button:hover {
+    box-shadow: 0 0 15px rgb(101, 190, 239);
+    border-color: rgb(101, 190, 239);
+}

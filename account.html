@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account – Random Project</title>
+    <link rel="stylesheet" href="dash.css">
+</head>
+
+<body>
+    <!-- Sidebar Container - dynamically loaded from sidebar-template.html -->
+    <div id="sidebar-container"></div>
+
+    <div class="main-content">
+        <h1>Account</h1>
+        <p class="page-subtitle">Manage your profile, security, and linked services.</p>
+
+        <!-- Profile -->
+        <div class="section">
+            <h2>👤 Profile</h2>
+
+            <div class="avatar-row">
+                <div class="avatar-circle" onclick="document.getElementById('avatarInput').click()" title="Click to change avatar">
+                    <span id="avatarEmoji">🧑</span>
+                    <img id="avatarImg" src="" style="display:none;">
+                </div>
+                <div class="avatar-info">
+                    <span class="display-name" id="displayNamePreview">Username</span>
+                    <span class="member-since">Member since <span id="memberSince">—</span></span>
+                </div>
+            </div>
+            <input type="file" id="avatarInput" accept="image/*">
+
+            <div class="setting-row">
+                <div class="setting-label">
+                    <span>Username</span>
+                    <small>Your public display name</small>
+                </div>
+                <input type="text" id="username" placeholder="Enter username" maxlength="30">
+            </div>
+
+            <div class="setting-row">
+                <div class="setting-label">
+                    <span>Email</span>
+                    <small>Used for login and notifications</small>
+                </div>
+                <input type="email" id="email" placeholder="you@example.com">
+            </div>
+
+            <div class="setting-row">
+                <div class="setting-label">
+                    <span>Bio</span>
+                    <small>Short description about yourself</small>
+                </div>
+                <textarea id="bio" placeholder="Write a short bio..."></textarea>
+            </div>
+
+            <div class="setting-row">
+                <div class="setting-label">
+                    <span>Website</span>
+                    <small>Your personal or portfolio link</small>
+                </div>
+                <input type="url" id="website" placeholder="https://yoursite.com">
+            </div>
+
+            <div class="setting-row">
+                <div class="setting-label">
+                    <span>Timezone</span>
+                    <small>Used to display times correctly</small>
+                </div>
+                <select id="timezone">
+                    <option value="UTC">UTC</option>
+                    <option value="Europe/London">London (GMT+0)</option>
+                    <option value="Europe/Ljubljana">Ljubljana (GMT+1)</option>
+                    <option value="Europe/Paris">Paris (GMT+1)</option>
+                    <option value="America/New_York">New York (GMT-5)</option>
+                    <option value="America/Los_Angeles">Los Angeles (GMT-8)</option>
+                    <option value="Asia/Tokyo">Tokyo (GMT+9)</option>
+                </select>
+            </div>
+
+            <div class="setting-row" style="border-bottom:none; padding-top:16px;">
+                <div></div>
+                <button class="btn" onclick="saveProfile()">Save Profile</button>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="section">
+            <h2>📊 Activity Stats</h2>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-value" id="statLogins">0</div>
+                    <div class="stat-label">Logins</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="statDays">0</div>
+                    <div class="stat-label">Days Active</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="statSaves">0</div>
+                    <div class="stat-label">Settings Saves</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="statSessions">0</div>
+                    <div class="stat-label">Sessions</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Security -->
+        <div class="section">
+            <h2>🔐 Security</h2>
+
+            <div class="setting-row">
+                <div class="setting-label">
+                    <span>Two-Factor Authentication</span>
+                    <small>Extra security on login</small>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="twoFA">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="setting-row">
+                <div class="setting-label">
+                    <span>Login Alerts</span>
+                    <small>Email me on new sign-in</small>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="loginAlerts" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="setting-row">
+                <div class="setting-label">
+                    <span>Change Password</span>
+                    <small>Update your login password</small>
+                </div>
+                <button class="btn" onclick="changePassword()">Change</button>
+            </div>
+
+            <div class="setting-row">
+                <div class="setting-label">
+                    <span>Active Sessions</span>
+                    <small>Sign out all other devices</small>
+                </div>
+                <button class="btn" onclick="revokeOtherSessions()">Revoke Others</button>
+            </div>
+        </div>
+
+        <!-- Linked accounts -->
+        <div class="section">
+            <h2>🔗 Linked Accounts</h2>
+
+            <div class="linked-row">
+                <div class="linked-info">
+                    <span class="linked-icon">🐙</span>
+                    <div>
+                        <div class="linked-name">GitHub</div>
+                        <div class="linked-status" id="githubStatus">Not connected</div>
+                    </div>
+                </div>
+                <button class="btn" id="githubBtn" onclick="toggleLinked('github')">Connect</button>
+            </div>
+
+            <div class="linked-row">
+                <div class="linked-info">
+                    <span class="linked-icon">🐦</span>
+                    <div>
+                        <div class="linked-name">Twitter / X</div>
+                        <div class="linked-status" id="twitterStatus">Not connected</div>
+                    </div>
+                </div>
+                <button class="btn" id="twitterBtn" onclick="toggleLinked('twitter')">Connect</button>
+            </div>
+
+            <div class="linked-row">
+                <div class="linked-info">
+                    <span class="linked-icon">🔵</span>
+                    <div>
+                        <div class="linked-name">Google</div>
+                        <div class="linked-status" id="googleStatus">Not connected</div>
+                    </div>
+                </div>
+                <button class="btn" id="googleBtn" onclick="toggleLinked('google')">Connect</button>
+            </div>
+        </div>
+
+        <!-- Danger zone -->
+        <div class="section danger-section">
+            <h2>⚠️ Danger Zone</h2>
+
+            <div class="setting-row">
+                <div class="setting-label">
+                    <span>Deactivate Account</span>
+                    <small>Temporarily hide your account</small>
+                </div>
+                <button class="btn btn-danger" onclick="deactivateAccount()">Deactivate</button>
+            </div>
+
+            <div class="setting-row">
+                <div class="setting-label">
+                    <span>Delete Account</span>
+                    <small>Permanently remove all your data</small>
+                </div>
+                <button class="btn btn-danger" onclick="deleteAccount()">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast"></div>
+
+    <script>
+        // ── Sidebar toggle ──
+        const toggleBtn = document.querySelector('.toggle-btn');
+        const sidebar = document.querySelector('.sidebar');
+        const mainContent = document.querySelector('.main-content');
+        const overlay = document.getElementById('sidebarOverlay');
+
+        function isMobile() { return window.innerWidth <= 600; }
+
+        function openSidebar() {
+            sidebar.classList.remove('collapsed');
+            if (isMobile()) overlay.classList.add('visible');
+        }
+
+        function closeSidebar() {
+            sidebar.classList.add('collapsed');
+            overlay.classList.remove('visible');
+            if (!isMobile()) mainContent.classList.add('expanded');
+        }
+
+        toggleBtn.addEventListener('click', () => {
+            if (sidebar.classList.contains('collapsed')) {
+                openSidebar();
+                if (!isMobile()) mainContent.classList.remove('expanded');
+            } else {
+                closeSidebar();
+            }
+        });
+
+        // Tap overlay to close sidebar on mobile
+        overlay.addEventListener('click', closeSidebar);
+
+        // On resize, clean up overlay if switching to desktop
+        window.addEventListener('resize', () => {
+            if (!isMobile()) overlay.classList.remove('visible');
+        });
+
+        // On mobile, start with sidebar collapsed
+        if (isMobile()) sidebar.classList.add('collapsed');
+
+        // ── Toast ──
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            clearTimeout(t._t);
+            t._t = setTimeout(() => t.classList.remove('show'), 2400);
+        }
+
+        // ── Load / save account data ──
+        function loadAccount() {
+            return JSON.parse(localStorage.getItem('accountData') || '{}');
+        }
+
+        function saveData(extra = {}) {
+            const d = {
+                username:     document.getElementById('username').value,
+                email:        document.getElementById('email').value,
+                bio:          document.getElementById('bio').value,
+                website:      document.getElementById('website').value,
+                timezone:     document.getElementById('timezone').value,
+                twoFA:        document.getElementById('twoFA').checked,
+                loginAlerts:  document.getElementById('loginAlerts').checked,
+                linked:       loadAccount().linked || {},
+                memberSince:  loadAccount().memberSince || new Date().toLocaleDateString(),
+                stats:        loadAccount().stats || { logins: 1, days: 1, saves: 0, sessions: 1 },
+                ...extra
+            };
+            localStorage.setItem('accountData', JSON.stringify(d));
+            return d;
+        }
+
+        function applyAccount(d) {
+            if (!d) return;
+            if (d.username)    { document.getElementById('username').value = d.username; document.getElementById('displayNamePreview').textContent = d.username; }
+            if (d.email)       document.getElementById('email').value = d.email;
+            if (d.bio)         document.getElementById('bio').value = d.bio;
+            if (d.website)     document.getElementById('website').value = d.website;
+            if (d.timezone)    document.getElementById('timezone').value = d.timezone;
+            document.getElementById('twoFA').checked       = !!d.twoFA;
+            document.getElementById('loginAlerts').checked = d.loginAlerts !== false;
+            if (d.memberSince) document.getElementById('memberSince').textContent = d.memberSince;
+            if (d.stats) {
+                document.getElementById('statLogins').textContent   = d.stats.logins   || 0;
+                document.getElementById('statDays').textContent     = d.stats.days     || 0;
+                document.getElementById('statSaves').textContent    = d.stats.saves    || 0;
+                document.getElementById('statSessions').textContent = d.stats.sessions || 0;
+            }
+            if (d.linked) {
+                ['github','twitter','google'].forEach(svc => {
+                    if (d.linked[svc]) setLinkedUI(svc, true);
+                });
+            }
+        }
+
+        function saveProfile() {
+            const d = saveData();
+            document.getElementById('displayNamePreview').textContent = d.username || 'Username';
+            // bump save count
+            d.stats = d.stats || {};
+            d.stats.saves = (d.stats.saves || 0) + 1;
+            localStorage.setItem('accountData', JSON.stringify(d));
+            document.getElementById('statSaves').textContent = d.stats.saves;
+            showToast('✓ Profile saved');
+        }
+
+        // ── Username live preview ──
+        document.getElementById('username').addEventListener('input', function () {
+            document.getElementById('displayNamePreview').textContent = this.value || 'Username';
+        });
+
+        // ── Avatar upload ──
+        document.getElementById('avatarInput').addEventListener('change', function () {
+            const file = this.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = e => {
+                const img = document.getElementById('avatarImg');
+                img.src = e.target.result;
+                img.style.display = 'block';
+                document.getElementById('avatarEmoji').style.display = 'none';
+                showToast('🖼 Avatar updated');
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // ── Security ──
+        document.getElementById('twoFA').addEventListener('change', function () {
+            saveData();
+            showToast(this.checked ? '🔐 2FA enabled' : '🔓 2FA disabled');
+        });
+
+        document.getElementById('loginAlerts').addEventListener('change', function () {
+            saveData();
+            showToast(this.checked ? '🔔 Login alerts on' : '🔕 Login alerts off');
+        });
+
+        function changePassword() {
+            const np = prompt('Enter new password (min 6 chars):');
+            if (np === null) return;
+            if (np.length >= 6) showToast('🔑 Password updated');
+            else showToast('⚠ Too short — min 6 characters');
+        }
+
+        function revokeOtherSessions() {
+            if (confirm('Sign out all other active sessions?')) showToast('✓ Other sessions revoked');
+        }
+
+        // ── Linked accounts ──
+        function setLinkedUI(svc, connected) {
+            const btn = document.getElementById(svc + 'Btn');
+            const status = document.getElementById(svc + 'Status');
+            if (connected) {
+                btn.textContent = 'Disconnect';
+                btn.classList.add('btn-danger');
+                status.textContent = 'Connected';
+                status.style.color = 'rgb(101, 239, 237)';
+            } else {
+                btn.textContent = 'Connect';
+                btn.classList.remove('btn-danger');
+                status.textContent = 'Not connected';
+                status.style.color = '';
+            }
+        }
+
+        function toggleLinked(svc) {
+            const d = loadAccount();
+            d.linked = d.linked || {};
+            const wasConnected = !!d.linked[svc];
+            if (wasConnected) {
+                if (!confirm(`Disconnect ${svc}?`)) return;
+                d.linked[svc] = false;
+                setLinkedUI(svc, false);
+                showToast(`🔌 ${svc} disconnected`);
+            } else {
+                d.linked[svc] = true;
+                setLinkedUI(svc, true);
+                showToast(`✓ ${svc} connected`);
+            }
+            localStorage.setItem('accountData', JSON.stringify(d));
+        }
+
+        // ── Danger zone ──
+        function deactivateAccount() {
+            if (confirm('Deactivate your account? You can reactivate by logging back in.')) {
+                showToast('💤 Account deactivated (demo)');
+            }
+        }
+
+        function deleteAccount() {
+            const confirm1 = confirm('This will permanently delete your account. Are you sure?');
+            if (!confirm1) return;
+            const confirm2 = prompt('Type DELETE to confirm:');
+            if (confirm2 === 'DELETE') {
+                localStorage.clear();
+                showToast('💀 Account deleted (demo)');
+            } else {
+                showToast('❌ Deletion cancelled');
+            }
+        }
+
+        // ── Init ──
+        (function init() {
+            let d = loadAccount();
+            if (!d.memberSince) {
+                d.memberSince = new Date().toLocaleDateString();
+                d.stats = { logins: 1, days: 1, saves: 0, sessions: 1 };
+                localStorage.setItem('accountData', JSON.stringify(d));
+            }
+            // bump session count
+            d.stats = d.stats || {};
+            d.stats.sessions = (d.stats.sessions || 0) + 1;
+            localStorage.setItem('accountData', JSON.stringify(d));
+            applyAccount(d);
+        })();
+    </script>
+    <script src="dash.js"></script>
+</body>
+
+</html>

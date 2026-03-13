@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Settings – Random Project</title>
+    <link rel="stylesheet" href="dash.css">
+</head>
+
+<body>
+    <!-- Sidebar Container - dynamically loaded from sidebar-template.html -->
+    <div id="sidebar-container"></div>
+
+    <!-- Main content -->
+    <div class="main-content">
+        <h1>Settings</h1>
+        <p class="page-subtitle">Manage your preferences below. Changes are saved automatically.</p>
+
+        <!-- Appearance -->
+        <div class="section">
+            <h2>🎨 Appearance</h2>
+
+            <div class="setting-row">
+                <div class="setting-label">
+                    <span>Dark Mode</span>
+                    <small>Use a dark background across all pages</small>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="darkMode" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="setting-row">
+                <div class="setting-label">
+                    <span>Font Size</span>
+                    <small>Adjust the base text size</small>
+                </div>
+                <select id="fontSize">
+                    <option value="14">Small (14px)</option>
+                    <option value="16" selected>Default (16px)</option>
+                    <option value="18">Large (18px)</option>
+                    <option value="20">Extra Large (20px)</option>
+                </select>
+            </div>
+
+            <div class="setting-row">
+                <div class="setting-label">
+                    <span>Sidebar Width</span>
+                    <small>Default sidebar width (pixels)</small>
+                </div>
+                <div class="range-row">
+                    <input type="range" id="sidebarWidth" min="90" max="200" value="125">
+                    <span class="range-val" id="sidebarWidthVal">125</span>
+                </div>
+            </div>
+
+            <div class="setting-row">
+                <div class="setting-label">
+                    <span>Compact Layout</span>
+                    <small>Reduce padding and spacing</small>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="compactLayout">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Notifications -->
+        <div class="section">
+            <h2>🔔 Notifications</h2>
+
+            <div class="setting-row">
+                <div class="setting-label">
+                    <span>Enable Notifications</span>
+                    <small>Show in-app alerts</small>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="notifEnabled" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="setting-row">
+                <div class="setting-label">
+                    <span>Sound Alerts</span>
+                    <small>Play a sound with notifications</small>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="notifSound">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="setting-row">
+                <div class="setting-label">
+                    <span>Notification Frequency</span>
+                    <small>How often to bundle alerts</small>
+                </div>
+                <select id="notifFreq">
+                    <option value="instant" selected>Instant</option>
+                    <option value="hourly">Hourly digest</option>
+                    <option value="daily">Daily digest</option>
+                    <option value="off">Off</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Privacy -->
+        <div class="section">
+            <h2>🔒 Privacy</h2>
+
+            <div class="setting-row">
+                <div class="setting-label">
+                    <span>Analytics</span>
+                    <small>Share anonymous usage data</small>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="analytics" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="setting-row">
+                <div class="setting-label">
+                    <span>Activity Status</span>
+                    <small>Show when you're online</small>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="activityStatus" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="setting-row">
+                <div class="setting-label">
+                    <span>Session Timeout</span>
+                    <small>Auto-logout after inactivity</small>
+                </div>
+                <select id="sessionTimeout">
+                    <option value="15">15 minutes</option>
+                    <option value="30" selected>30 minutes</option>
+                    <option value="60">1 hour</option>
+                    <option value="never">Never</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Account actions -->
+        <div class="section">
+            <h2>⚙️ Account Actions</h2>
+
+            <div class="setting-row">
+                <div class="setting-label">
+                    <span>Change Password</span>
+                    <small>Update your login password</small>
+                </div>
+                <button class="btn" onclick="showPasswordModal()">Change</button>
+            </div>
+
+            <div class="setting-row">
+                <div class="setting-label">
+                    <span>Export Data</span>
+                    <small>Download a copy of your data</small>
+                </div>
+                <button class="btn" onclick="exportData()">Export</button>
+            </div>
+
+            <div class="setting-row">
+                <div class="setting-label">
+                    <span>Clear Cache</span>
+                    <small>Remove locally stored data</small>
+                </div>
+                <button class="btn" onclick="clearCache()">Clear</button>
+            </div>
+
+            <div class="setting-row">
+                <div class="setting-label">
+                    <span>Delete Account</span>
+                    <small>Permanently remove your account</small>
+                </div>
+                <button class="btn btn-danger" onclick="confirmDelete()">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast">✓ Saved</div>
+
+    <script>
+        // ── Sidebar toggle ──
+        const toggleBtn = document.querySelector('.toggle-btn');
+        const sidebar = document.querySelector('.sidebar');
+        const mainContent = document.querySelector('.main-content');
+
+        toggleBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('collapsed');
+            mainContent.classList.toggle('expanded');
+        });
+
+        // ── Toast helper ──
+        function showToast(msg = '✓ Saved') {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            clearTimeout(t._timer);
+            t._timer = setTimeout(() => t.classList.remove('show'), 2200);
+        }
+
+        // ── Load settings from localStorage ──
+        function loadSettings() {
+            const defaults = {
+                darkMode: true,
+                fontSize: '16',
+                sidebarWidth: '125',
+                compactLayout: false,
+                notifEnabled: true,
+                notifSound: false,
+                notifFreq: 'instant',
+                analytics: true,
+                activityStatus: true,
+                sessionTimeout: '30',
+            };
+            const saved = JSON.parse(localStorage.getItem('appSettings') || '{}');
+            return { ...defaults, ...saved };
+        }
+
+        function applySettings(s) {
+            document.getElementById('darkMode').checked        = s.darkMode;
+            document.getElementById('fontSize').value          = s.fontSize;
+            document.getElementById('sidebarWidth').value      = s.sidebarWidth;
+            document.getElementById('sidebarWidthVal').textContent = s.sidebarWidth;
+            document.getElementById('compactLayout').checked   = s.compactLayout;
+            document.getElementById('notifEnabled').checked    = s.notifEnabled;
+            document.getElementById('notifSound').checked      = s.notifSound;
+            document.getElementById('notifFreq').value         = s.notifFreq;
+            document.getElementById('analytics').checked       = s.analytics;
+            document.getElementById('activityStatus').checked  = s.activityStatus;
+            document.getElementById('sessionTimeout').value    = s.sessionTimeout;
+
+            // Live-apply some settings
+            document.body.style.fontSize = s.fontSize + 'px';
+            document.querySelector('.main-content').style.padding = s.compactLayout ? '14px 20px' : '30px 40px';
+        }
+
+        function saveSettings() {
+            const s = {
+                darkMode:        document.getElementById('darkMode').checked,
+                fontSize:        document.getElementById('fontSize').value,
+                sidebarWidth:    document.getElementById('sidebarWidth').value,
+                compactLayout:   document.getElementById('compactLayout').checked,
+                notifEnabled:    document.getElementById('notifEnabled').checked,
+                notifSound:      document.getElementById('notifSound').checked,
+                notifFreq:       document.getElementById('notifFreq').value,
+                analytics:       document.getElementById('analytics').checked,
+                activityStatus:  document.getElementById('activityStatus').checked,
+                sessionTimeout:  document.getElementById('sessionTimeout').value,
+            };
+            localStorage.setItem('appSettings', JSON.stringify(s));
+            applySettings(s);
+            showToast('✓ Saved');
+        }
+
+        // ── Attach save listener to all controls ──
+        document.querySelectorAll('input, select').forEach(el => {
+            el.addEventListener('change', saveSettings);
+        });
+
+        // ── Range live label ──
+        document.getElementById('sidebarWidth').addEventListener('input', function () {
+            document.getElementById('sidebarWidthVal').textContent = this.value;
+        });
+
+        // ── Action buttons ──
+        function showPasswordModal() {
+            const np = prompt('Enter new password:');
+            if (np && np.length >= 6) {
+                showToast('🔑 Password updated');
+            } else if (np !== null) {
+                showToast('⚠ Password too short (min 6 chars)');
+            }
+        }
+
+        function exportData() {
+            const data = {
+                settings: JSON.parse(localStorage.getItem('appSettings') || '{}'),
+                exportedAt: new Date().toISOString(),
+            };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'my-data.json';
+            a.click();
+            showToast('📦 Data exported');
+        }
+
+        function clearCache() {
+            if (confirm('Clear all locally stored data?')) {
+                localStorage.clear();
+                showToast('🗑 Cache cleared');
+                setTimeout(() => location.reload(), 800);
+            }
+        }
+
+        function confirmDelete() {
+            if (confirm('Are you sure? This cannot be undone.')) {
+                showToast('💀 Account deleted (demo)');
+            }
+        }
+
+        // ── Init ──
+        applySettings(loadSettings());
+    </script>
+
+    <script src="dash.js"></script>
+</body>
+
+</html>

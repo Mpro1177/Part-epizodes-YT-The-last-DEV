@@ -1,0 +1,90 @@
+body {
+    color: rgb(101, 190, 239);
+    text-align: center;
+    font: 24px Arial, sans-serif;
+    background-color: rgb(37, 35, 35);
+}
+
+h4 {
+    color: rgb(15, 167, 255);
+    text-align: left;
+    border-radius: 5px;
+    border-top-left-radius: 2px;
+}
+
+/* Sidebar default */
+.sidebar {
+    width: 125px;               /* make links fill the sidebar better */
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    background-color: rgb(37, 35, 35);
+    border-right: 3px solid rgb(101, 190, 239);
+    box-shadow: 0 0 10px rgb(101, 190, 239);
+    padding-top: 60px;          /* space for toggle button */
+    display: flex;
+    flex-direction: column;      /* stack links vertically */
+    align-items: flex-start;     /* align links to left */
+    transition: transform 0.3s ease;
+}
+
+/* Collapsed sidebar */
+.sidebar.collapsed {
+    transform: translateX(-100%);
+}
+
+/* Sidebar links */
+.sidebar a {
+    width: 100%;                /* full width so shadows align */
+    padding: 12px 0px;
+    margin-bottom: 10px;        /* space between links */
+    color: rgb(101, 190, 239);
+    text-decoration: none;
+    font-family: Arial, sans-serif;
+    transition: all 0.3s ease;
+}
+
+.sidebar a:hover {
+    background-color: rgb(50, 50, 50);
+    color: rgb(101, 239, 237);
+    text-shadow: 0 0 5px rgb(101, 239, 237);
+}
+
+.sidebar a.settings {
+    font-weight: bold;
+}
+
+/* Main content default */
+.main-content {
+    margin-left: 150px;          /* match sidebar width */
+    padding: 20px;
+    transition: margin-left 0.3s ease;
+}
+
+/* Expanded main content when sidebar is hidden */
+.main-content.expanded {
+    margin-left: 0;
+}
+
+/* Toggle button fixed on top-left, outside sidebar */
+.toggle-btn {
+    position: fixed;
+    top: 10px;
+    left: 10px;                  /* place outside sidebar */
+    background-color: rgb(37, 35, 35);
+    color: rgb(101, 190, 239);
+    border: 1px solid rgb(101, 190, 239);
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 10px;
+    z-index: 1000;
+    box-shadow: 0 0 5px rgb(101, 190, 239);
+    transition: all 0.3s ease;
+}
+
+.toggle-btn:hover {
+    background-color: rgb(50, 50, 50);
+    color: rgb(101, 239, 237);
+    box-shadow: 0 0 10px rgb(101, 239, 237);
+}
