@@ -1,2 +1,1 @@
-# School
-My school repo for auto sync
+My  repo for auto sync
